@@ -8,16 +8,30 @@ mongoose.Promise = global.Promise;
 var userschema = new Schema({
    name               : String,
    password           : String,
-   created_at         :  Date,
+   created_at         : { type: Date, default: Date.now },
    email              : String,
+});
+var postschema = new Schema({
+  uid : [{ type: String, ref: 'user' }],
+  title: String,
+  body : String,
+  created_at: { type: Date, default: Date.now }
+});
+
+var voteschema = new Schema({
+  voted_by    :  [{ type: String, ref: 'user' }],
+  post_id     :  [{ type: String, ref: 'post' }],
+  voted_at    :  { type: Date, default: Date.now }
 });
 
 //these db shows the details that show by the group created by users
-//"user"-->model for accessing schema user
 mongoose.connect('mongodb://localhost/nfn', {
   // using mongoose client to
   useMongoClient: true,
 });
+//"user"-->model for accessing schema user
 module.exports= {
-user : mongoose.model('user', userschema)
-}
+user : mongoose.model('user', userschema),
+post : mongoose.model('post', postschema),
+vote : mongoose.model('vote',voteschema)
+};
