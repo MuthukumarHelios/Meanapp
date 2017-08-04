@@ -13,14 +13,13 @@ var dbdata = {
   email   : req.body.email
 };
 if(req.body.password != req.body.confirmpass){
-    return res.json("kindy provide valid confirmpass");}
+    return res.json({error: true , message: "kindy provide valid confirmpass"});}
       dbdata.password =  bcrypt.hashSync(dbdata.password);
        console.log(dbdata);
          db.user.create(dbdata, function(err, cb){
-             if(err){return res.json("dbexception")};
-                 return res.json(cb);
+             if(err){return res.json({error: true, message:"kinldy enter the mandatory fields"})};
+                 return res.json({error: false , message: "successfully registered"});
                 });
-
     });
 
 // meant for user login with bcrypt {Encryption}
@@ -34,45 +33,44 @@ router.post("/user/login", function(req, res){
    db.user.find({email: dbdata.email}, function(err, data){
      if(err|| data.length == 0 ){return res.json({error: true, message: "invalid credentials"});}
       if(bcrypt.compareSync(dbdata.password, data[0].password)){
-        var token = jwt.sign({mail: dbdata.email,
-                  expiresInMinutes: 1440
-        },'secret');
-        return res.json({error:false,message:"successfully logged in", jwt: token});
+        // var token = jwt.sign({mail: dbdata.email,
+        //           expiresInMinutes: 1440
+        // },'secret');
+        return res.json({error:false,message:"successfully logged in", jwt: "token"});
     }
     return res.json({error:true, message: "invalid credentials"});
    });
 });
 
-// the common middle ware meant for
-router.use(function(req, res, next) {
-
-  // check header or url parameters or post parameters for token
-  var token = req.body.token || req.query.token || req.headers['x-access-token'];
-
-  // decode token
-  if (token) {
-    // verifies secret and checks exp
-    jwt.verify(token, 'secret', function(err, decoded) {
-      if (err) {
-        return res.json({ success: false, message: 'Failed to authenticate token.' });
-      } else {
-        // if everything is good, save to request for use in other routes
-        req.decoded = decoded;
-        next();
-      }
-    });
-
-  } else {
-
-    // if there is no token
-    // return an error
-    return res.status(403).send({
-        success: false,
-        message: 'No token provided.'
-    });
-
-  }
-});
+// the common middle ware meant for authenticate
+// router.use(function(req, res, next) {
+//
+//   // check header or url parameters or post parameters for token
+//   var token = req.body.token || req.query.token || req.headers['x-access-token'];
+//
+//   // decode token
+//   if (token) {
+//     // verifies secret and checks exp
+//     jwt.verify(token, 'secret', function(err, decoded) {
+//       if (err) {
+//         return res.json({ success: false, message: 'Failed to authenticate token.' });
+//       } else {
+//         // if everything is good, save to request for use in other routes
+//         req.decoded = decoded;
+//         next();
+//       }
+//     });
+//
+//   } else {
+//
+//     // if there is no token
+//     // return an error
+//     return res.status(403).send({
+//         success: false,
+//         message: 'No token provided.'
+//     });
+//   }
+// });
 
 
 router.post("/post/create", function(req, res){
@@ -99,6 +97,7 @@ var dbdata = {
     calback.forEach(function(value){
           voted_array.push(value.voted_by);
     });
+    // check whether the user is already voted or not
     var voted_array = voted_array.concat.apply([], voted_array);
     console.log(voted_array);
        if(voted_array.indexOf(dbdata.voted_by) != -1){
@@ -114,26 +113,20 @@ var dbdata = {
 
 router.post("/vote/all", function(req, res){
    db.vote.find({}, function(err, data){
-     if(err)return res.json("db exception");
-     console.log("postid==>",data[0].post_id);
-     console.log("voted_by==>",data[0].voted_by);
-     return res.json(data);
+    //  api using ternary operator
+     err ? res.json("db exception"):res.json(data);
    });
 });
 
-
-
 router.post("/post/all", function(req, res){
   var search = req.body.search;
-   db.post.find({title: new RegExp('^'+ti+'$', "i")}, function(err, data){
-     if(err)return res.json("db exception");
-     return res.json(data);
+   db.post.find({}, function(err, data){
+     err ? res.json("db exception"): res.json(data);
    });
 });
 router.post("/user/all", function(req, res){
   db.user.find({}, function(err, data){
-    if(err)return res.json("db exception");
-    return res.json(data);
+    err ? res.json("db exception"):res.json(data);
   });
 });
 
@@ -142,6 +135,10 @@ router.post("/populate", function(req, res){
     if(err)return res.json("db exception");
     return res.json(data);
   });
+});
+// meant for angular
+router.get('*', (req, res)=>{
+    res.sendFile(__dirname+'/views/index.html');
 });
 
 module.exports = router;

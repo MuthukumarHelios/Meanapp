@@ -6,30 +6,30 @@ var Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 //==>user Collection is meant for the registration form
 var userschema = new Schema({
-   name               : String,
-   password           : String,
+   name               : {type: String,required: true},
+   password           : {type: String,required: true},
    created_at         : { type: Date, default: Date.now },
-   email              : String,
+   email              : {type: String,required: true}
 });
 var postschema = new Schema({
   uid : [{ type: String, ref: 'user' }],
-  title: String,
-  body : String,
+  title: {type: String,required: true},
+  body : {type: String,required: true},
   created_at: { type: Date, default: Date.now }
 });
 
 var voteschema = new Schema({
-  voted_by    :  [{ type: String, ref: 'user' }],
+  voted_by    :  [{ type: String,ref: 'user' }],
   post_id     :  [{ type: String, ref: 'post' }],
   voted_at    :  { type: Date, default: Date.now }
 });
 
 //these db shows the details that show by the group created by users
 mongoose.connect('mongodb://localhost/nfn', {
-  // using mongoose client to
+  // using mongoose client to avoid promises exception
   useMongoClient: true,
 });
-//"user"-->model for accessing schema user
+// making my model available through out the app
 module.exports= {
 user : mongoose.model('user', userschema),
 post : mongoose.model('post', postschema),

@@ -1,0 +1,30 @@
+{
+  "name": "nfn",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "serve": "nodemon server.js"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "express-session": "^1.15.4",
+    "html": "^1.0.0",
+    "jade": "~1.11.0",
+    "jsonwebtoken": "^7.4.1",
+    "mongoose": "^4.11.4",
+    "morgan": "~1.8.1",
+    "multer": "^1.3.0",
+    "nodemon": "^1.11.0",
+    "serve-favicon": "~2.4.2"
+  },
+  "description": "\"just a simple task in mean stack\"",
+  "main": "app.js",
+  "devDependencies": {},
+  "author": "Muthukumar (node.js develper)",
+  "license": "ISC"
+}
