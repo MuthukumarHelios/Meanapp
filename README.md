@@ -12,7 +12,7 @@ npm -v ==> 5.0.3
 
 Operating system : Linux -- Flavour Ununtu 16.04V`
 
----
+-----
 *App Sturucture*
 Controller.js ===> contains the complete controller file
 
@@ -26,3 +26,4 @@ Public ==> this folder contains the Angular code includeing controller and view 
            
 views/index.html===> the single file which consists of the angular.js dependency file
 
+-----
