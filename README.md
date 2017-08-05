@@ -20,10 +20,12 @@ Controller.js ===> contains the complete controller file of Node.js(Express.js)
 Server.js ==> server for express.js
 
 Public ==> this folder contains the Angular code includeing controller and view part 
-     javascript               
+     
+  javascripts  
           only Angular
-     view  
-         only view file which contains the .html file
+
+   view  
+         only view file which contains the .html files for angular with state (ui-router)
            
 views/index.html===> the single file which consists of the angular.js dependency file
 
