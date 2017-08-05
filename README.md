@@ -12,19 +12,16 @@ npm -v ==> 5.0.3
 
 Operating system : Linux -- Flavour Ununtu 16.04V`
 
-
+---
 *App Sturucture*
 Controller.js ===> contains the complete controller file
 
 Server.js ==> server for express.js
 
 Public ==> this folder contains the Angular code includeing controller and view part 
-   
-    ---javascript     
-           
-           only Angular
-    ---view
-         
+     javascript               
+          only Angular
+     view  
          only view file which contains the .html file
            
 views/index.html===> the single file which consists of the angular.js dependency file
