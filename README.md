@@ -29,3 +29,5 @@ Public ==> this folder contains the Angular code includeing controller and view 
            
 views/index.html===> the single file which consists of the angular.js dependency file
 
+Post Collection With list of api's
+https://www.getpostman.com/collections/5c88e02d5b97a1aeb883
