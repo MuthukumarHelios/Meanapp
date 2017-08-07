@@ -6,22 +6,21 @@ var Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 //==>user Collection is meant for the registration form
 var userschema = new Schema({
-   name               : {type: String,required: true},
-   password           : {type: String,required: true},
+   name               : {type: String,required: true,required: true},
+   password           : {type: String,required: true,required: true},
    created_at         : { type: Date, default: Date.now },
-   email              : {type: String,required: true}
+   email              : {type: String,required: true, unique: true}
 });
 var postschema = new Schema({
-  uid : [{ type: String, ref: 'user' }],
+  uid : [{ type: String, ref: 'user',required: true }],
   title: {type: String,required: true},
   body : {type: String,required: true},
   created_at: { type: Date, default: Date.now }
 });
-
 var voteschema = new Schema({
-  voted_by    :  [{ type: String,ref: 'user' }],
-  post_id     :  [{ type: String, ref: 'post' }],
-  voted_at    :  { type: Date, default: Date.now }
+  voted_by    :  [{ type: String,ref: 'user',required: true }],
+  post_id     :  [{ type: String, ref: 'post',required: true }],
+  voted_at    :  {type: Date, default: Date.now}
 });
 
 //these db shows the details that show by the group created by users

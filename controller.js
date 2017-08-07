@@ -17,7 +17,7 @@ if(req.body.password != req.body.confirmpass){
       dbdata.password =  bcrypt.hashSync(dbdata.password);
        console.log(dbdata);
          db.user.create(dbdata, function(err, cb){
-             if(err){return res.json({error: true, message:"kinldy enter the mandatory fields"})};
+             if(err){return res.json({error: true, message:"kinldy enter the valid mailid"})};
                  return res.json({error: false , message: "successfully registered"});
                 });
     });
@@ -31,12 +31,13 @@ router.post("/user/login", function(req, res){
 
 console.log("after token",dbdata);
    db.user.find({email: dbdata.email}, function(err, data){
+     console.log(data);
      if(err|| data.length == 0 ){return res.json({error: true, message: "invalid credentials"});}
       if(bcrypt.compareSync(dbdata.password, data[0].password)){
         var token = jwt.sign({mail: dbdata.email,
                   expiresInMinutes: 1440
         },'secret');
-        return res.json({error:false,message:"successfully logged in", jwt: token});
+        return res.json({error:false,message:"successfully logged in", jwt: token, user_id: data[0]._id});
     }
     return res.json({error:true, message: "invalid credentials"});
    });
@@ -47,6 +48,7 @@ var authenticate = function(req, res, next) {
 
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
+  console.log(req.headers);
 
   // decode token
   if (token) {
@@ -80,41 +82,42 @@ var dbdata = {
   body : req.body.body ,
 }
  db.post.create(dbdata, function(err, result){
-   if(err)return res.json("error");
-   return res.json(result);
+   if(err)return res.json({error: true, message: "enter all the datas"});
+   return res.json({error: false, message: "post created successfully"});
  });
 });
-
 router.post("/vote/create", function(req, res){
 var dbdata = {
    voted_by:req.body.voted_by,
    post_id: req.body.post_id
  };
- db.vote.find({}, function(error, calback){
-  if(error){return res.json({error: true, message: "dbexception"});}
-  console.log(calback[0]);
-  var voted_array = [];
-    calback.forEach(function(value){
-          voted_array.push(value.voted_by);
-    });
-    // check whether the user is already voted or not
-    var voted_array = voted_array.concat.apply([], voted_array);
-    console.log(voted_array);
-       if(voted_array.indexOf(dbdata.voted_by) != -1){
-         return res.json({error: true, message: "you have already voted"});
-       }
-    // return res.json("inserted");
-      db.vote.create(dbdata, function(err, result){
-       if(err)return res.json("error");
-       return res.json(result);
-    });
+  db.vote.find({post_id: dbdata.post_id}, function(error, calback){
+   if(error|| calback.length == 1){return res.json({error: true, message: "you have already voted"});}
+    console.log(calback[0]);
+    db.vote.create(dbdata, function(err, result){
+               if(err)return res.json({error: true, message: "you have already voted"});
+                 return res.json({error:false, message: "successfully voted"});
+      });
   });
 });
 
-router.post("/vote/all", function(req, res){
-   db.vote.find({}, function(err, data){
+// down vote api
+router.post("/vote/delete", function(req, res){
+   db.vote.remove({voted_by: req.body.voted_by, post_id: req.body.post_id}, function(err, data){
+   console.log("delete vote==>",data.result);
     //  api using ternary operator
-     err ? res.json("db exception"):res.json(data);
+   if(err){return res.json("db exception");}
+    !data.result.n ? res.json({error: true, message: "you are not voted"}):res.json({error: false, message: "successfully downvoted"});
+   });
+});
+
+
+// used to count the vote for the particular posts using post it
+// console.log(userid);
+router.post("/vote/count", function(req, res){
+   db.vote.find({post_id: req.body.post_id}, function(err, data){
+    //  api using ternary operator
+     err ? res.json("db exception"):res.json({"dbdata": data, count: data.length});
    });
 });
 
@@ -124,6 +127,14 @@ router.post("/post/all",authenticate, function(req, res){
      err ? res.json("db exception"): res.json(data);
    });
 });
+
+router.post("/vote/all", function(req, res){
+  db.vote.find({}, function(err, data){
+    err ? res.json("db exception"):res.json(data);
+  });
+});
+
+
 router.post("/user/all", function(req, res){
   db.user.find({}, function(err, data){
     err ? res.json("db exception"):res.json(data);

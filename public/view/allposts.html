@@ -1,2 +1,19 @@
 <h4>all available posts</h4>
-<h1>{{allposts}}</h1>
+
+  <table>
+<tr>
+  <th>title</th>
+  <th>Body of the post</th>
+  <th>vote here</th>
+</tr>
+
+    <tr ng-repeat = "post in allposts">
+        <td><h2>{{post.title}}</h2></td>
+          <td><h2>{{post.body}}</h2></td>
+   <td><button type="submit" ng-click = "upvote(post._id)">upvote</button></td>
+   <td><button type="submit" ng-click = "downvote(post._id)">downvote</button></td>
+ </tr>
+</table>
+
+<button ui-sref ="createPosts" >createPosts</button>
+<button type="submit" ng-click = "logout()" >logout</button>

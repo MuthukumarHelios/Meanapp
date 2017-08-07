@@ -1,9 +1,11 @@
 <h2>login user</h2>
 <form >
-<input type="email" ng-model  =  "formdata.email" required>
-<!-- <label for="email"  class="">Email</label> -->
+  Email:
+  <input type="email" ng-model  =  "formdata.email" required><br>
+  password:
+  <input type="password" ng-model = "formdata.password"  required><br>
+  <button type="submit"  ng-click = "loginuser(formdata)" >sign in</button>
 
-    <input type="password" ng-model = "formdata.password"  required>
-    <button type="submit"  ng-click = "loginuser(formdata)" >sign in</button>
+    <a ui-sref = "userRegister"> register</a>
 
 </form>

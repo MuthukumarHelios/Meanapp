@@ -1,0 +1,11 @@
+<h1>meant for user register</h1>
+Name:
+<input type="name" ng-model  =  "formdata.name" required><br>
+email:
+  <input type="email" ng-model  =  "formdata.email" required><br>
+password:
+ <input type="password" ng-model = "formdata.password"  required><br>
+confirmpass:
+ <input type="confirmpass" ng-model = "formdata.confirmpass" required><br>
+<button type="submit"  ng-click = "registerUser(formdata)" >Register</button>
+<button ui-sref = "users">login</button>
