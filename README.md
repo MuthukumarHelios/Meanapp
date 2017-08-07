@@ -31,3 +31,17 @@ views/index.html===> the single file which consists of the angular.js dependency
 
 Post Collection With list of api's
 https://www.getpostman.com/collections/5c88e02d5b97a1aeb883
+
+
+dbdump ==> file consists of simple 5 posts with 2 users 
+
+
+you run that app in you localmachine by clone this repo
+>git clone **repo**
+cd reponame
+npm install
+npm run serve //nodemon server starts
+**check whether you mongo instance is running **
+
+
+
