@@ -37,13 +37,16 @@ dbdump ==> file consists of simple 5 posts with 2 users
 
 you run that app in you localmachine by clone this repo
 
-```git clone **repo**
+```
+git clone **repo**
 
 cd reponame
 
 npm install
 
-npm run serve //nodemon server starts```
+npm run serve //nodemon server starts
+
+```
 **check whether you mongo instance is running **
 
 
