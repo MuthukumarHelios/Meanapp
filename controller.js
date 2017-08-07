@@ -48,7 +48,6 @@ var authenticate = function(req, res, next) {
 
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
-  console.log(req.headers);
 
   // decode token
   if (token) {
@@ -120,6 +119,15 @@ router.post("/vote/count", function(req, res){
      err ? res.json("db exception"):res.json({"dbdata": data, count: data.length});
    });
 });
+router.post("/post/search",authenticate, function(req, res){
+  var search = req.body.search;
+   db.post.find({"title": /'+search+'/}, function(err, data){
+     console.log(data);
+     err ? res.json("db exception"): res.json(data);
+   });
+});
+
+
 
 router.post("/post/all",authenticate, function(req, res){
   var search = req.body.search;
