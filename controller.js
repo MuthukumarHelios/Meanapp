@@ -155,9 +155,4 @@ router.post("/populate", function(req, res){
     return res.json(data);
   });
 });
-// meant for angular
-router.get('*', (req, res)=>{
-    res.sendFile(__dirname+'/views/index.html');
-});
-
 module.exports = router;
